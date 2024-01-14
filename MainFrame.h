@@ -1,10 +1,13 @@
 #pragma once
 #include <wx/wx.h>
-#include <wx/spinctrl.h>
 
 class MainFrame : public wxFrame
 {
 public:
 	MainFrame(const wxString& title);
+private:
+	void OnButtonClicked(wxCommandEvent& evt);
+	void OnSliderChanged(wxCommandEvent& evt);
+	void OnTextCtChanged(wxCommandEvent& evt);
+	wxDECLARE_EVENT_TABLE();
 };
-
