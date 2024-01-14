@@ -9,5 +9,4 @@ private:
 	void OnButtonClicked(wxCommandEvent& evt);
 	void OnSliderChanged(wxCommandEvent& evt);
 	void OnTextCtChanged(wxCommandEvent& evt);
-	wxDECLARE_EVENT_TABLE();
 };
