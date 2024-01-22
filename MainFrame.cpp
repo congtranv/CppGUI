@@ -2,32 +2,21 @@
 
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
 	wxPanel* panel = new wxPanel(this);
+	wxButton* button = new wxButton(panel, wxID_ANY, "Button", wxPoint(300, 250), wxSize(200, 100));
 
-	wxButton* button1 = new wxButton(panel, wxID_ANY, "Button 1", wxPoint(300, 275), wxSize(200, 50));
-	wxButton* button2 = new wxButton(panel, wxID_ANY, "Button 2", wxPoint(300, 325), wxSize(200, 50));
+	wxStatusBar* statusBar = CreateStatusBar();
+	statusBar->SetDoubleBuffered(true);  // Fix Flickering Status bar
 
-	this->Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClosed, this);
-	this->Bind(wxEVT_BUTTON, &MainFrame::OnAnyButtonClicked, this);
-	button1->Bind(wxEVT_BUTTON, &MainFrame::On1stButtonClicked, this);
-	button2->Bind(wxEVT_BUTTON, &MainFrame::On2ndButtonClicked, this);
-
-	CreateStatusBar(); 
+	panel->Bind(wxEVT_MOTION, &MainFrame::OnMouseEvent, this);
+	button->Bind(wxEVT_MOTION, &MainFrame::OnMouseEvent, this);
 }
 
-void MainFrame::OnAnyButtonClicked(wxCommandEvent& evt) {
-	wxLogMessage("Button clicked");
-}
-
-void MainFrame::On1stButtonClicked(wxCommandEvent& evt) {
-	wxLogStatus("Button 1 clicked");
-	evt.Skip();
-}
-void MainFrame::On2ndButtonClicked(wxCommandEvent& evt) {
-	wxLogStatus("Button 2 clicked");
-	evt.Skip();
-}
-
-void MainFrame::OnClosed(wxCloseEvent& evt) {
-	wxLogMessage("Window closed");
-	evt.Skip();
+void MainFrame::OnMouseEvent(wxMouseEvent& evt) {
+	/* Transform: wxWindow::ScreenToClient or wxWindow::ClientToScreen */
+	// wxPoint mousePos = evt.GetPosition();  // Client position
+	wxPoint mousePos = wxGetMousePosition();  // Screen position
+	/* Convert position from screen to MainFrame */
+	mousePos = this->ScreenToClient(mousePos);
+	wxString message = wxString::Format("Mouse Event Detected (x = %d, y = %d)", mousePos.x, mousePos.y);
+	wxLogStatus(message);
 }
