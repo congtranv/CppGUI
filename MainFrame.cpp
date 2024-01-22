@@ -3,11 +3,10 @@
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
 	wxPanel* panel = new wxPanel(this);
 
-	CreateStatusBar();
+	wxStatusBar* statusBar = CreateStatusBar();
+	statusBar->SetDoubleBuffered(true);  // Fix Flickering Status bar
 
-	// wxEVT_LEFT_DOWN | wxEVT_RIGHT_DOWN | wxEVT_MIDDLE_DOWN - mouse click
-	// wxEVT_LEFT_DCLICK - double click
-	panel->Bind(wxEVT_LEFT_DOWN, &MainFrame::OnMouseEvent, this);
+	panel->Bind(wxEVT_MOTION, &MainFrame::OnMouseEvent, this);
 }
 
 void MainFrame::OnMouseEvent(wxMouseEvent& evt) {
